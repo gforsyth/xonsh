@@ -4,10 +4,8 @@ from prompt_toolkit.utils import DummyContext
 from prompt_toolkit.shortcuts import (create_prompt_application,
     create_eventloop, create_asyncio_eventloop, create_output)
 
-from prompt_toolkit.buffer import Buffer, AcceptAction
-
 from xonsh.shell import prompt_toolkit_version_info
-from xonsh.ptk.xontext import XontextToolbar
+from xonsh.ptk.xontext import XontextToolbar, XONTEXT_BUFFER
 
 class Prompter(object):
 
@@ -82,8 +80,7 @@ class Prompter(object):
 
 
         #add xontext buffer to xonsh.cli
-        self.cli.add_buffer('XONTEXT_BUFFER',
-                            Buffer(accept_action=AcceptAction.IGNORE))
+        self.cli.add_buffer('XONTEXT_BUFFER', XONTEXT_BUFFER)
         self.cli.layout.children.append(XontextToolbar())
 
         # Replace stdout.

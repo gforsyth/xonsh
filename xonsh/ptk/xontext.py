@@ -8,9 +8,7 @@ from prompt_toolkit.layout.containers import ConditionalContainer, Window
 from prompt_toolkit.layout.screen import Char
 from prompt_toolkit.layout.dimension import LayoutDimension
 
-XONTEXT_BUFFER = 'XONTEXT_BUFFER'
-
-
+XONTEXT_BUFFER = Buffer(accept_action=AcceptAction.IGNORE)
 
 class XontextToolbarControl(BufferControl):
     def __init__(self):
@@ -30,3 +28,5 @@ class XontextToolbar(ConditionalContainer):
                 XontextToolbarControl(),
                 height=LayoutDimension.exact(1)),
             filter=HasFocus('XONTEXT_BUFFER') & ~IsDone())
+
+
