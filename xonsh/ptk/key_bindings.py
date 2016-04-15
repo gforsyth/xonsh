@@ -2,20 +2,12 @@
 """Key bindings for prompt_toolkit xonsh shell."""
 import builtins
 
-from prompt_toolkit.filters import Filter, IsMultiline, HasFocus, IsDone
+from prompt_toolkit.filters import Filter, IsMultiline
 from prompt_toolkit.keys import Keys
-from prompt_toolkit.enums import DEFAULT_BUFFER
-from prompt_toolkit.layout.controls import BufferControl
-from prompt_toolkit.layout.lexers import SimpleLexer
-from prompt_toolkit.buffer import Buffer, AcceptAction
-from prompt_toolkit.token import Token
-from prompt_toolkit.layout.processors import BeforeInput
-from prompt_toolkit.layout.containers import ConditionalContainer, Window
-from prompt_toolkit.layout.screen import Char
-from prompt_toolkit.layout.dimension import LayoutDimension
-from xonsh.tools import ON_WINDOWS
 
-XONTEXT_BUFFER = 'XONTEXT_BUFFER'
+from xonsh.tools import ON_WINDOWS
+from xonsh.ptk.xontext import has_xontext
+
 
 env = builtins.__xonsh_env__
 indent_ = env.get('INDENT')
@@ -158,41 +150,11 @@ def load_xonsh_bindings(key_bindings_manager):
         b.cursor_left(count=abs(relative_begin_index))
         b.cursor_down(count=1)
 
-
-   # class XontextToolbarControl(BufferControl):
-   #     def __init__(self):
-   #         token = Token.Toolbar.System
-
-   #         super(XontextToolbarControl, self).__init__(
-   #             buffer_name=XONTEXT_BUFFER,
-   #             default_char=Char(token=token),
-   #             lexer=SimpleLexer(default_token=token.Text),
-   #             input_processors=[BeforeInput.static('Xontext: ', token)],)
-
-
-   # class XontextToolbar(ConditionalContainer):
-   #     def __init__(self):
-   #         super(XontextToolbar, self).__init__(
-   #             content=Window(
-   #                 XontextToolbarControl(),
-   #                 height=LayoutDimension.exact(1)),
-   #             filter=HasFocus(XONTEXT_BUFFER) & ~IsDone())
-
-   # in_xontext = HasFocus(XONTEXT_BUFFER)
-
-   # @handle(Keys.ControlM)
-   # def _(event):
-   #     event.cli.layout.children.append(XontextToolbar())
-   #     event.cli.add_buffer('XONTEXT_BUFFER', XONTEXT_BUFFER, focus=False)
-   #     print(event.cli.buffers)
-   #     event.cli.request_redraw()
-
-    @handle(Keys.ControlX)
+    @handle(Keys.ControlX, filter=~has_xontext)
     def _(event):
         event.cli.push_focus('XONTEXT_BUFFER')
-        event.cli.request_redraw()
 
-    @handle(Keys.ControlC)
+    @handle(Keys.ControlC, filter=has_xontext)
     def _(event):
         event.cli.pop_focus()
 

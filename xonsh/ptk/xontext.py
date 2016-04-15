@@ -9,6 +9,7 @@ from prompt_toolkit.layout.screen import Char
 from prompt_toolkit.layout.dimension import LayoutDimension
 
 XONTEXT_BUFFER = Buffer(accept_action=AcceptAction.IGNORE)
+has_xontext = HasFocus('XONTEXT_BUFFER')
 
 class XontextToolbarControl(BufferControl):
     def __init__(self):
