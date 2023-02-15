@@ -441,6 +441,16 @@ class CommandPipeline:
             s = b
         if universal_newlines or self.spec.universal_newlines:
             s = s.replace("\r\n", "\n").replace("\r", "\n")
+        return self._strip_single_trailing_newline(s)
+
+    @staticmethod
+    def _strip_single_trailing_newline(s):
+        # If there is only a single line in output, strip off the trailing newline
+        # as a convenience for chaining together commands
+        # e.g. which $(echo ls)
+        # Otherwise, leave it in place for capture fidelity
+        if len(linecount := s.split("\n", 2)) == 2 and not linecount[-1]:
+            return s.strip("\n")
         return s
 
     #

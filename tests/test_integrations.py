@@ -409,7 +409,7 @@ from xonsh.lib.subprocess import check_output
 
 print(check_output(["echo", "hello"]).decode("utf8"))
 """,
-        "hello\n\n",
+        "hello\n",
         0,
     ),
     #

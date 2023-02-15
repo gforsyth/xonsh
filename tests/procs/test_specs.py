@@ -5,6 +5,7 @@ from subprocess import Popen
 
 import pytest
 
+from xonsh.procs.pipelines import CommandPipeline
 from xonsh.procs.posix import PopenThread
 from xonsh.procs.proxies import STDOUT_DISPATCHER, ProcProxy, ProcProxyThread
 from xonsh.procs.specs import SubprocSpec, cmds_to_specs, run_subproc
@@ -126,7 +127,7 @@ def test_capture_always(
 
     output = run_subproc(cmds, "stdout")  # $()
     assert exp not in capfd.readouterr().out
-    assert output == exp
+    assert output == CommandPipeline._strip_single_trailing_newline(exp)
 
     # Explicitly non-captured commands are never captured (/always printed)
     run_subproc(cmds, captured=False)  # $[]
